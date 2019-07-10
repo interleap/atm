@@ -5,12 +5,14 @@ import org.junit.Test;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class AutoTellerMachineTest {
 
     @Test
     public void shouldCallBankingServiceToWithdrawAmount() {
-        FakeBankingService bankingService = new FakeBankingService(true);
+        FakeBankingService bankingService = new FakeBankingService(false);
         AutoTellerMachine autoTellerMachine = new AutoTellerMachine(bankingService);
 
         final Integer expectedValue = 500;
@@ -19,6 +21,18 @@ public class AutoTellerMachineTest {
         assertTrue(bankingService.wasInvoked);
         assertEquals(expectedValue, bankingService.amount.get());
     }
+
+    @Test
+    public void shouldCallBankingServiceToWithdrawAmountWithMockito(){
+        BankingService bankingService = mock(BankingService.class);
+        AutoTellerMachine autoTellerMachine = new AutoTellerMachine(bankingService);
+
+        final Integer expectedValue = 500;
+        autoTellerMachine.withdraw(expectedValue);
+
+        verify(bankingService).withdraw(500);
+    }
+
 }
 
 class FakeBankingService extends BankingService {

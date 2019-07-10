@@ -8,6 +8,7 @@ public class AutoTellerMachine {
     }
 
     public void withdraw(int amount){
-        //WRITE CODE HERE.
+        bankingService.withdraw(amount);
+        printer.print("The amount was withdrawn.")
     }
 }
